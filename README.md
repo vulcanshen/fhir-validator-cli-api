@@ -26,21 +26,15 @@ This project provides a RESTful API interface for the [FHIR validator_cli.jar](h
 }
 ```
 
-## Usage
-1. Place `validator_cli.jar` in the project root.
-2. Build and run the API:
-   ```sh
-   go build -o fhir-validator-api
-   ./fhir-validator-api
-   ```
-3. Access Swagger UI at `http://localhost:8081/swagger/index.html`
+## Quick Start
 
-## Docker
 To run with Docker:
 
 ```sh
 docker run -p 8081:8081 --platform=linux/amd64 vulcanshen2304/fhir-validator-cli-api:latest
 ```
+
+Access Swagger UI at `http://localhost:8081/swagger/index.html`
 
 ## Development
 - Requires Go 1.18+
