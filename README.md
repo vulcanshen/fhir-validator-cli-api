@@ -39,7 +39,7 @@ This project provides a RESTful API interface for the [FHIR validator_cli.jar](h
 To run with Docker:
 
 ```sh
-docker run -p 8081:8081 vulcanshen2304/fhir-validator-cli-api:latest
+docker run -p 8081:8081 --platform=linux/amd64 vulcanshen2304/fhir-validator-cli-api:latest
 ```
 
 ## Development
