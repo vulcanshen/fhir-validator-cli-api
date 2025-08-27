@@ -36,7 +36,11 @@ This project provides a RESTful API interface for the [FHIR validator_cli.jar](h
 3. Access Swagger UI at `http://localhost:8081/swagger/index.html`
 
 ## Docker
-A Dockerfile is provided for containerized deployment.
+To run with Docker:
+
+```sh
+docker run -p 8081:8081 vulcanshen2304/fhir-validator-cli-api:latest
+```
 
 ## Development
 - Requires Go 1.18+
@@ -47,4 +51,3 @@ See [LICENSE](LICENSE).
 
 ## Author
 - Vulcan Shen ([GitHub](https://github.com/vulcanshen))
-
