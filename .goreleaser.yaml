@@ -1,0 +1,104 @@
+version: 2
+
+project_name: fhir-validator-cli-api
+
+env:
+  - GO111MODULE=on
+
+before:
+  hooks:
+    - go mod tidy
+
+universal_binaries:
+  - replace: false
+
+builds:
+  - id: "build"
+    binary: "fhir-validator-cli-api"
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w
+
+release:
+  github:
+    owner: vulcanshen
+    name: fhir-validator-cli-api
+  name_template: "Release {{ .Tag }}"
+  skip_upload: true
+
+dockers:
+  - id: "fhir-validator-cli-api"
+    use: buildx
+    goarch: amd64
+    image_templates:
+      - "vulcanshen2304/fhir-validator-cli-api:latest"
+      - "vulcanshen2304/fhir-validator-cli-api:{{ .Version }}"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.description=Designed to orchestrate and execute a series of commands based on a declarative YAML configuration file."
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+    extra_files:
+      - README.md
+      - LICENSE
+      - validator_cli.jar
+
+
+snapshot:
+  version_template: "{{ .Version }}-snapshot"
+
+gomod:
+  proxy: true
+
+report_sizes: true
+
+
+changelog:
+  sort: asc
+  use: github
+  format: "{{ .SHA }}: {{ .Message }}{{ with .AuthorUsername }} (@{{ . }}){{ end }}"
+  filters:
+    exclude:
+      - "^test:"
+      - "^test\\("
+      - "^chore: update$"
+      - "^chore: docs$"
+      - "^docs: update$"
+      - "^chore: schema$"
+      - "^chore: typo$"
+      - "^chore: auto-update generated files$"
+      - "^chore: update schema$"
+      - "^chore: schema update$"
+      - "^chore\\(deps\\): "
+      - "^(build|ci): "
+      - "merge conflict"
+      - "merge conflict"
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+      - go mod tidy
+  groups:
+    - title: "New Features"
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 100
+    - title: "Security updates"
+      regexp: '^.*?sec(\(.+\))??!?:.+$'
+      order: 150
+    - title: "Bug fixes"
+      regexp: '^.*?(fix|refactor)(\(.+\))??!?:.+$'
+      order: 200
+    - title: "Documentation updates"
+      regexp: ^.*?docs?(\(.+\))??!?:.+$
+      order: 400
+    - title: Other work
+      order: 9999

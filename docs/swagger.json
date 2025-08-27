@@ -1,0 +1,125 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "http api for fhir validator_cli",
+        "title": "FHIR Validator API",
+        "contact": {
+            "name": "Vulcan Shen",
+            "url": "https://github.com/vulcanshen",
+            "email": "vulcan.shen.2304@gmail.com"
+        },
+        "version": "1"
+    },
+    "host": "localhost:8081",
+    "basePath": "/api",
+    "paths": {
+        "/validate": {
+            "post": {
+                "description": "Validates a FHIR payload using the validator_cli.jar and returns the result as plain text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "validation"
+                ],
+                "summary": "Validate FHIR payload synchronously",
+                "parameters": [
+                    {
+                        "description": "FHIR payload and arguments",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.TestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validation output",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/validate/sse": {
+            "post": {
+                "description": "Validates a FHIR payload using the validator_cli.jar and streams the output via Server-Sent Events (SSE)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/event-stream"
+                ],
+                "tags": [
+                    "validation"
+                ],
+                "summary": "Validate FHIR payload with SSE",
+                "parameters": [
+                    {
+                        "description": "FHIR payload and arguments",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.TestRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Validation output stream",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.TestRequest": {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "payload": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

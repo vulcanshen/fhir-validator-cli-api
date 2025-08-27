@@ -1,0 +1,84 @@
+basePath: /api
+definitions:
+  handler.TestRequest:
+    properties:
+      args:
+        items:
+          type: string
+        type: array
+      payload:
+        type: object
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: vulcan.shen.2304@gmail.com
+    name: Vulcan Shen
+    url: https://github.com/vulcanshen
+  description: http api for fhir validator_cli
+  title: FHIR Validator API
+  version: "1"
+paths:
+  /validate:
+    post:
+      consumes:
+      - application/json
+      description: Validates a FHIR payload using the validator_cli.jar and returns
+        the result as plain text
+      parameters:
+      - description: FHIR payload and arguments
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/handler.TestRequest'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Validation output
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Validate FHIR payload synchronously
+      tags:
+      - validation
+  /validate/sse:
+    post:
+      consumes:
+      - application/json
+      description: Validates a FHIR payload using the validator_cli.jar and streams
+        the output via Server-Sent Events (SSE)
+      parameters:
+      - description: FHIR payload and arguments
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/handler.TestRequest'
+      produces:
+      - text/event-stream
+      responses:
+        "200":
+          description: Validation output stream
+          schema:
+            type: string
+        "400":
+          description: Bad request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Validate FHIR payload with SSE
+      tags:
+      - validation
+swagger: "2.0"
