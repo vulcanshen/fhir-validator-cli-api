@@ -21,8 +21,6 @@ builds:
       - linux
     goarch:
       - amd64
-    ldflags:
-      - -s -w
 
 release:
   github:
@@ -49,8 +47,6 @@ dockers:
       - "--label=org.opencontainers.image.version={{.Version}}"
       - "--label=org.opencontainers.image.source={{.GitURL}}"
     extra_files:
-      - README.md
-      - LICENSE
       - validator_cli.jar
 
 
